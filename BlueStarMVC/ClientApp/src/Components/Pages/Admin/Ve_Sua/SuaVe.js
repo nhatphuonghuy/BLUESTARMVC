@@ -35,12 +35,12 @@ const SuaVe = () => {
                 cccd: selectedTicketInfo[0]?.cccd || '',
                 name: selectedTicketInfo[0]?.name || '',
                 flyId: selectedTicketInfo[0]?.flyId || '',
-                kgId: selectedTicketInfo[0]?.kgId || 0,
+                kgId: selectedTicketInfo[0]?.kgId || '',
                 seatId: selectedTicketInfo[0]?.seatId || '',
                 foodId: selectedTicketInfo[0]?.foodId || '',
                 ticketPrice: selectedTicketInfo[0]?.ticketPrice || '',
                 mail: selectedTicketInfo[0]?.mail || '',
-                disId: selectedTicketInfo[0]?.disId || 0
+                disId: selectedTicketInfo[0]?.disId || ''
             });
         }
     }, [selectedTicketInfo]);
@@ -61,22 +61,27 @@ const SuaVe = () => {
         event.preventDefault();
         try {
 
-            if (!ticketInfo || !ticketInfo.maKhachHang) {
+            if (!ticketInfo || !ticketInfo.tId) {
                 alert("Vé không được tìm thấy");
                 return;
             }
 
             const updatedData = {
-                cId: ticketInfo.maKhachHang,
-                Fullname: ticketInfo.tenKhachHang,
-                Mail: ticketInfo.email,
-                Point: ticketInfo.diemTichLuy,
-                NumId: ticketInfo.CCCD
+                tId: ticketInfo.tId,
+                cccd: ticketInfo.cccd,
+                name: ticketInfo.name,
+                flyId: ticketInfo.flyId,
+                kgId: ticketInfo.kgId,
+                foodId: ticketInfo.foodId,
+                seatId: ticketInfo.seatId,
+                mail: ticketInfo.mail,
+                ticketPrice: ticketInfo.ticketPrice,
+                disId: ticketInfo.disId
             };
 
 
             if (!updatedData.tId) {
-                alert("CId là bắt buộc");
+                alert("TId là bắt buộc");
                 return;
             }
 
@@ -113,7 +118,7 @@ const SuaVe = () => {
             </div>
 
             <div className="head-name">
-                <h2>Thêm khách hàng</h2>
+                <h2>Sửa thông tin vé</h2>
             </div>
 
             <div className="infor-cn">
@@ -126,7 +131,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="tId"
                                 placeholder="Mã vé"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.tId}
                                 onChange={handleChange}
                                 readOnly
                             />
@@ -138,7 +143,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="cccd"
                                 placeholder="Tên khách hàng"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.cccd}
                                 onChange={handleChange}
                             />
                         </div>
@@ -149,7 +154,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="name"
                                 placeholder="Tên khách hàng"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.name}
                                 onChange={handleChange}
                             />
                         </div>
@@ -162,7 +167,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="flyId"
                                 placeholder="Mã chuyến bay"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.flyId}
                                 onChange={handleChange}
                             />
                         </div>
@@ -173,7 +178,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="kgId"
                                 placeholder="Mã hành lý"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.kgId}
                                 onChange={handleChange}
                             />
                         </div>
@@ -184,7 +189,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="seatId"
                                 placeholder="Mã chỗ ngồi"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.seatId}
                                 onChange={handleChange}
                             />
                         </div>
@@ -198,7 +203,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="foodId"
                                 placeholder="Mã thức ăn"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.foodId}
                                 onChange={handleChange}
                             />
                         </div>
@@ -209,7 +214,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="ticketPrice"
                                 placeholder="Giá vé"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.ticketPrice}
                                 onChange={handleChange}
                             />
                         </div>
@@ -222,7 +227,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="mail"
                                 placeholder="Email"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.mail}
                                 onChange={handleChange}
                             />
                         </div>
@@ -233,7 +238,7 @@ const SuaVe = () => {
                                 className="form-control"
                                 id="disId"
                                 placeholder="Mã khuyến mãi"
-                                value={ticketInfo.maKhachHang}
+                                value={ticketInfo.disId}
                                 onChange={handleChange}
                             />
                         </div>

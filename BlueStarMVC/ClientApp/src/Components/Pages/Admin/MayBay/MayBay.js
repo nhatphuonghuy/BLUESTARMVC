@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MayBay = () => {
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [planes, setPlanes] = useState([]);
     const [selectedPlanes, setSelectedPlanes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -110,9 +111,37 @@ const MayBay = () => {
             }
         }
     };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+
+    const handleSearch = async () => {
+        if (searchKeyword != "") {
+            try {
+                const response = await fetch(`/api/plane/SearchPlanes?searchKeyword=${searchKeyword}`);
+                const data = await response.json();
+                setPlanes(data);
+            } catch (error) {
+                console.error("Error searching customers:", error);
+            }
+        }
+        else {
+            try {
+                const response = await fetch("/api/plane/GetPlanes");
+                const data = await response.json();
+                setPlanes(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
     return (
-        <div className="col-md-10 main">
-  <div className="container mt-md-6">
+        <div className="col-md-12 main">
+  <div className="mt-md-6">
     <div className="navbar d-flex justify-content-between align-items-center">
       <h2 className="main-name mb-0">Thông tin máy bay</h2>
       {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
@@ -132,7 +161,13 @@ const MayBay = () => {
       <div className="d-flex w-100 justify-content-start align-items-center">
         <i className="bi bi-search" />
         <span className="first">
-          <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
         </span>
         <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
       </div>
@@ -141,10 +176,10 @@ const MayBay = () => {
       <thead>
         <tr>
           <th />
-          <th>PL_ID</th>
-          <th>TYPEOFPLANE</th>
-          <th>BUSINESS_CAPACITY</th>
-          <th>ECONOMY_CAPACITY</th>
+          <th>Mã máy bay</th>
+          <th>Loại máy bay</th>
+          <th>Sức chứa khoang thương gia</th>
+          <th>Sức chứa khoang thường</th>
         </tr>
       </thead>
       <tbody>

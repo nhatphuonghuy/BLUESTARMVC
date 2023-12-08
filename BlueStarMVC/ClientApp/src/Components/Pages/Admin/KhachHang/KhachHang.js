@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const KhachHang = () => {
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [customers, setCustomers] = useState([]);
     const [selectedCustomers, setSelectedCustomers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,18 +22,6 @@ const KhachHang = () => {
     const handleClick = () => {
         navigate('/KhachHang_Them'); 
     };
-
-    useEffect(() => {
-        fetch("api/customer/GetCustomers")
-            .then(response => response.json())
-            .then(responseJson => {
-                console.log(responseJson);  
-                setCustomers(responseJson);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-    }, [])
 
     
 
@@ -82,39 +71,69 @@ const KhachHang = () => {
     };
 
     const handleDelete = async () => {
-        if (window.confirm("Are you sure to delete this customer")) {
-            try {
-                const response = await axios.delete('http://localhost:44430/api/customer', {
-                    data: selectedCustomers, // Pass the array as data
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+        if (selectedCustomers.length > 0) {
+            if (window.confirm("Are you sure to delete this customer")) {
+                try {
+                    const response = await axios.delete('http://localhost:44430/api/customer', {
+                        data: selectedCustomers, // Pass the array as data
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
 
-                if (response.status === 200) {
-                    const updatedCustomers = customers.filter(customer => !selectedCustomers.includes(customer.cId));
+                    if (response.status === 200) {
+                        const updatedCustomers = customers.filter(customer => !selectedCustomers.includes(customer.cId));
 
-                    // Cập nhật state để tái render bảng
-                    setCustomers(updatedCustomers);
+                        // Cập nhật state để tái render bảng
+                        setCustomers(updatedCustomers);
 
-                    // Xóa danh sách khách hàng đã chọn
-                    setSelectedCustomers([]);
-                    toast.success('Customers deleted successfully');
-                    
-                } else {
-                    toast.error('Failed to delete customers');
+                        // Xóa danh sách khách hàng đã chọn
+                        setSelectedCustomers([]);
+                        toast.success('Customers deleted successfully');
+
+                    } else {
+                        toast.error('Failed to delete customers');
+                    }
+                } catch (error) {
+                    toast.error('Error deleting customers: ' + error.message);
                 }
+            }
+        }
+    };
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+
+    const handleSearch = async () => {
+        if (searchKeyword != "") {
+            try {
+                const response = await fetch(`/api/customer/SearchCustomers?searchKeyword=${searchKeyword}`);
+                const data = await response.json();
+                setCustomers(data);
             } catch (error) {
-                toast.error('Error deleting customers: ' + error.message);
+                console.error("Error searching customers:", error);
+            }
+        }
+        else {
+            try {
+                const response = await fetch("/api/customer/GetCustomers");
+                const data = await response.json();
+                setCustomers(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
         }
     };
 
 
 
+
     return (
-        <div className="col-md-10 main">
-            <div className="container mt-md-6">
+        <div className="col-md-12 main">
+            <div className=" mt-md-6">
                 <div className="navbar d-flex justify-content-between align-items-center">
                     <h2 className="main-name mb-0">Khách hàng</h2>
                     {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
@@ -134,7 +153,14 @@ const KhachHang = () => {
       <div className="d-flex w-100 justify-content-start align-items-center">
         <i className="bi bi-search" />
         <span className="first">
-          <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
+
         </span>
         <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
       </div>
@@ -143,8 +169,8 @@ const KhachHang = () => {
       <thead>
         <tr>
           <th />
-          <th>C_ID</th>
-          <th>Num_ID</th>
+          <th>Mã khách hàng</th>
+          <th>Số CCCD</th>
           <th>Tên khách hàng</th>
           <th>Điểm tích lũy</th>
           <th>Email</th>

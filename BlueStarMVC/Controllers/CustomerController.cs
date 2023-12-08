@@ -124,7 +124,29 @@ namespace BlueStarMVC.Controllers
             return Ok("Customers deleted successfully");
         }
 
+        [HttpGet]
+        [Route("SearchCustomers")]
+        public IActionResult SearchCustomers([FromQuery] string searchKeyword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    return BadRequest("Invalid search keyword");
+                }
 
+                // Search customers by name containing the provided keyword
+                var searchResults = _dbContext.Customers
+                .Where(c => c.Fullname.Contains(searchKeyword) || c.NumId.Contains(searchKeyword) || c.CId.Contains(searchKeyword))
+                .ToList();
+
+                return Ok(searchResults);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
 

@@ -48,7 +48,7 @@ const SuaDoAn = () => {
         event.preventDefault();
         try {
 
-            if (!foodInfo || !foodInfo.maKhachHang) {
+            if (!foodInfo || !foodInfo.fId) {
                 alert("Thức ăn không được tìm thấy");
                 return;
             }
@@ -98,7 +98,7 @@ const SuaDoAn = () => {
             </div>
 
             <div className="head-name">
-                <h2>Thêm thông tin thức ăn</h2>
+                <h2>Sửa thông tin thức ăn</h2>
             </div>
 
             <div className="infor-cn">

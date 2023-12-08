@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HanhLy = () => {
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [luggages, setLuggages] = useState([]);
     const [selectedLuggages, setSelectedLuggages] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -68,7 +69,7 @@ const HanhLy = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedLuggages.length > 0) {
-                const response = await fetch(`/api/luggage/GetLuggageDetails?cIds=${selectedLuggages.join(',')}`);
+                const response = await fetch(`/api/luggage/GetLuggageDetails?luggageCode=${selectedLuggages.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -109,9 +110,37 @@ const HanhLy = () => {
             }
         }
     };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+
+    const handleSearch = async () => {
+        if (searchKeyword != "") {
+            try {
+                const response = await fetch(`/api/luggage/SearchLuggages?searchKeyword=${searchKeyword}`);
+                const data = await response.json();
+                setLuggages(data);
+            } catch (error) {
+                console.error("Error searching customers:", error);
+            }
+        }
+        else {
+            try {
+                const response = await fetch("/api/luggage/GetLuggages");
+                const data = await response.json();
+                setLuggages(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
     return (
-        <div className="col-md-10 main">
-        <div className="container mt-md-6">
+        <div className="col-md-12 main">
+        <div className=" mt-md-6">
           <div className="navbar d-flex justify-content-between align-items-center">
             <h2 className="main-name mb-0">Thông tin hành lý</h2>
             {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
@@ -131,7 +160,13 @@ const HanhLy = () => {
             <div className="d-flex w-100 justify-content-start align-items-center">
               <i className="bi bi-search" />
               <span className="first">
-                <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
               </span>
               <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
             </div>
@@ -140,9 +175,9 @@ const HanhLy = () => {
             <thead>
               <tr>
                 <th />
-                <th>LUGGAGE_CODE</th>
-                <th>MASS</th>
-                <th>PRICE</th>
+                <th>Mã hành lý</th>
+                <th>Cân nặng</th>
+                <th>Giá tiền</th>
               </tr>
             </thead>
                     <tbody>
@@ -152,8 +187,8 @@ const HanhLy = () => {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        onChange={() => handleCheckboxChange(item.cId)}
-                                        checked={selectedLuggages.includes(item.cId)}
+                                        onChange={() => handleCheckboxChange(item.luggageCode)}
+                                        checked={selectedLuggages.includes(item.luggageCode)}
                                     />
                                 </td>
                                 <td>{item.luggageCode}</td>

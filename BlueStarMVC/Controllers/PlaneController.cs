@@ -89,7 +89,7 @@ namespace BlueStarMVC.Controllers
                 existingPlane.Typeofplane = objPlane.Typeofplane;
                 existingPlane.BusinessCapacity = objPlane.BusinessCapacity;
                 existingPlane.EconomyCapacity = objPlane.EconomyCapacity;
-                
+
 
                 // Lưu các thay đổi vào cơ sở dữ liệu
                 await _dbContext.SaveChangesAsync();
@@ -121,6 +121,29 @@ namespace BlueStarMVC.Controllers
             _dbContext.Planes.RemoveRange(planes);
             await _dbContext.SaveChangesAsync();
             return Ok("Customers deleted successfully");
+        }
+        [HttpGet]
+        [Route("SearchPlanes")]
+        public IActionResult SearchPlanes([FromQuery] string searchKeyword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    return BadRequest("Invalid search keyword");
+                }
+
+                // Search customers by name containing the provided keyword
+                var searchResults = _dbContext.Planes
+                .Where(c => c.PlId.Contains(searchKeyword) || c.Typeofplane.Contains(searchKeyword))
+                .ToList();
+
+                return Ok(searchResults);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

@@ -15,11 +15,11 @@ public partial class Chuyenbay
 
     public string? ToLocation { get; set; }
 
-    public DateTime? DepartureTime { get; set; }
+    public string? DepartureTime { get; set; }
 
-    public DateTime? ArrivalTime { get; set; }
+    public string? ArrivalTime { get; set; }
 
-    public DateTime? DepartureDay { get; set; }
+    public string? DepartureDay { get; set; }
 
-    public decimal? OriginalPrice { get; set; }
+    public int? OriginalPrice { get; set; }
 }

@@ -71,19 +71,19 @@ public partial class BluestarContext : DbContext
                 .HasMaxLength(5)
                 .HasColumnName("airport_ID");
             entity.Property(e => e.ArrivalTime)
-                .HasColumnType("datetime")
+                .HasMaxLength(5)
                 .HasColumnName("arrivalTime");
             entity.Property(e => e.DepartureDay)
-                .HasColumnType("date")
+                .HasMaxLength(10)
                 .HasColumnName("departureDay");
             entity.Property(e => e.DepartureTime)
-                .HasColumnType("datetime")
+                .HasMaxLength(5)
                 .HasColumnName("departureTime");
             entity.Property(e => e.FromLocation)
                 .HasMaxLength(255)
                 .HasColumnName("fromLocation");
             entity.Property(e => e.OriginalPrice)
-                .HasColumnType("money")
+                .HasColumnType("int")
                 .HasColumnName("originalPrice");
             entity.Property(e => e.PlId)
                 .HasMaxLength(5)
@@ -135,7 +135,8 @@ public partial class BluestarContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("D_ID");
             entity.Property(e => e.DFinish)
-                .HasColumnType("smalldatetime")
+                .HasMaxLength(10)
+                .IsUnicode(false)
                 .HasColumnName("D_FINISH");
             entity.Property(e => e.DName)
                 .HasMaxLength(100)
@@ -143,7 +144,8 @@ public partial class BluestarContext : DbContext
                 .HasColumnName("D_NAME");
             entity.Property(e => e.DPercent).HasColumnName("D_PERCENT");
             entity.Property(e => e.DStart)
-                .HasColumnType("smalldatetime")
+                .HasMaxLength(10)
+                .IsUnicode(false)
                 .HasColumnName("D_START");
         });
 

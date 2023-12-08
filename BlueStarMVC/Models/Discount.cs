@@ -9,9 +9,9 @@ public partial class Discount
 
     public string? DName { get; set; }
 
-    public DateTime? DStart { get; set; }
+    public string? DStart { get; set; }
 
-    public DateTime? DFinish { get; set; }
+    public string? DFinish { get; set; }
 
     public int? DPercent { get; set; }
 }

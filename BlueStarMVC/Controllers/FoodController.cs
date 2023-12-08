@@ -123,9 +123,30 @@ namespace BlueStarMVC.Controllers
             return Ok("Foods deleted successfully");
         }
 
+        [HttpGet]
+        [Route("SearchFoods")]
+        public IActionResult SearchFoods([FromQuery] string searchKeyword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    return BadRequest("Invalid search keyword");
+                }
+
+                // Search customers by name containing the provided keyword
+                var searchResults = _dbContext.Foods
+                .Where(c => c.FId.Contains(searchKeyword) || c.FName.Contains(searchKeyword) || c.FPrice.Contains(searchKeyword))
+                .ToList();
+
+                return Ok(searchResults);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
 
 
-
-
+        }
     }
 }

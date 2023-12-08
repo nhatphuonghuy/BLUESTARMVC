@@ -88,7 +88,7 @@ namespace BlueStarMVC.Controllers
                 // Cập nhật thông tin của khách hàng từ dữ liệu mới
                 existingSanbay.AirportName = objSanbay.AirportName;
                 existingSanbay.Place = objSanbay.Place;
-                
+
 
                 // Lưu các thay đổi vào cơ sở dữ liệu
                 await _dbContext.SaveChangesAsync();
@@ -120,6 +120,29 @@ namespace BlueStarMVC.Controllers
             _dbContext.Sanbays.RemoveRange(sanbays);
             await _dbContext.SaveChangesAsync();
             return Ok("Customers deleted successfully");
+        }
+        [HttpGet]
+        [Route("SearchSanbays")]
+        public IActionResult SearchSanbays([FromQuery] string searchKeyword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    return BadRequest("Invalid search keyword");
+                }
+
+                // Search customers by name containing the provided keyword
+                var searchResults = _dbContext.Sanbays
+                .Where(c => c.AirportId.Contains(searchKeyword) || c.AirportName.Contains(searchKeyword) || c.Place.Contains(searchKeyword))
+                .ToList();
+
+                return Ok(searchResults);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

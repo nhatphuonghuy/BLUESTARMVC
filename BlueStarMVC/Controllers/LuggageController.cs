@@ -89,7 +89,7 @@ namespace BlueStarMVC.Controllers
                 existingluggage.LuggageCode = objLuggage.LuggageCode;
                 existingluggage.Mass = objLuggage.Mass;
                 existingluggage.Price = objLuggage.Price;
-                
+
 
                 // Lưu các thay đổi vào cơ sở dữ liệu
                 await _dbContext.SaveChangesAsync();
@@ -121,6 +121,29 @@ namespace BlueStarMVC.Controllers
             _dbContext.Luggage.RemoveRange(luggages);
             await _dbContext.SaveChangesAsync();
             return Ok("luggages deleted successfully");
+        }
+        [HttpGet]
+        [Route("SearchLuggages")]
+        public IActionResult SearchLuggages([FromQuery] string searchKeyword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    return BadRequest("Invalid search keyword");
+                }
+
+                // Search customers by name containing the provided keyword
+                var searchResults = _dbContext.Luggage
+                .Where(c => c.LuggageCode.Contains(searchKeyword))
+                .ToList();
+
+                return Ok(searchResults);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

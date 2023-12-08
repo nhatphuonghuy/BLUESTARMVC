@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Ve = () => {
     const [tickets, setTickets] = useState([]);
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [selectedTickets, setSelectedTickets] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
@@ -19,7 +20,7 @@ const Ve = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     const handleClick = () => {
-        navigate('/KhachHang_Them');
+        navigate('/Ve_Them');
     };
 
     useEffect(() => {
@@ -68,7 +69,7 @@ const Ve = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedTickets.length > 0) {
-                const response = await fetch(`/api/ticket/GetTicketDetails?cIds=${selectedTickets.join(',')}`);
+                const response = await fetch(`/api/ticket/GetTicketDetails?tIds=${selectedTickets.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -109,9 +110,37 @@ const Ve = () => {
             }
         }
     };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+
+    const handleSearch = async () => {
+        if (searchKeyword != "") {
+            try {
+                const response = await fetch(`/api/ticket/SearchTickets?searchKeyword=${searchKeyword}`);
+                const data = await response.json();
+                setTickets(data);
+            } catch (error) {
+                console.error("Error searching tickets:", error);
+            }
+        }
+        else {
+            try {
+                const response = await fetch("/api/ticket/GetTickets");
+                const data = await response.json();
+                setTickets(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
     return (
-        <div className="col-md-10 main">
-        <div className="container mt-md-6">
+        <div className="col-md-12 main">
+        <div className="mt-md-6">
           <div className="navbar d-flex justify-content-between align-items-center">
             <h2 className="main-name mb-0">Thông tin vé</h2>
             {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
@@ -131,7 +160,13 @@ const Ve = () => {
             <div className="d-flex w-100 justify-content-start align-items-center">
               <i className="bi bi-search" />
               <span className="first">
-                <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
               </span>
               <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
             </div>
@@ -140,16 +175,16 @@ const Ve = () => {
             <thead>
               <tr>
                 <th />
-                <th>T_ID</th>
+                <th>Mã vé</th>
                 <th>CCCD</th>
-                <th>Name</th>
-                <th>Fly_ID</th>
-                <th>Kg_ID</th>
-                <th>Seat_ID</th>
-                <th>Food_ID</th>
-                <th>Ticket_Price</th>
+                <th>Tên</th>
+                <th>Mã chuyến bay</th>
+                <th>Mã hành lý</th>
+                <th>Mã ghế</th>
+                <th>Mã thức ăn</th>
+                <th>Giá vé</th>
                 <th>Mail</th>
-                <th>Dis_ID</th>
+                <th>Mã khuyến mãi</th>
               </tr>
             </thead>
                     <tbody>
@@ -159,8 +194,8 @@ const Ve = () => {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        onChange={() => handleCheckboxChange(item.cId)}
-                                        checked={selectedTickets.includes(item.cId)}
+                                        onChange={() => handleCheckboxChange(item.tId)}
+                                        checked={selectedTickets.includes(item.tId)}
                                     />
                                 </td>
                                 <td>{item.tId}</td>

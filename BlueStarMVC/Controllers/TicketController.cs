@@ -128,5 +128,29 @@ namespace BlueStarMVC.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok("Tickets deleted successfully");
         }
+
+        [HttpGet]
+        [Route("SearchTickets")]
+        public IActionResult SearchTickets([FromQuery] string searchKeyword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(searchKeyword))
+                {
+                    return BadRequest("Invalid search keyword");
+                }
+
+                // Search customers by name containing the provided keyword
+                var searchResults = _dbContext.Tickets
+                .Where(c => c.Cccd.Contains(searchKeyword) || c.Name.Contains(searchKeyword) || c.FlyId.Contains(searchKeyword) || c.TId.Contains(searchKeyword) || c.DisId.Contains(searchKeyword) || c.SeatId.Contains(searchKeyword))
+                .ToList();
+
+                return Ok(searchResults);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SanBay = () => {
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [sanbays, setSanbays] = useState([]);
     const [selectedSanbays, setSelectedSanbays] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,17 +23,7 @@ const SanBay = () => {
         navigate('/SanBay_Them');
     };
 
-    useEffect(() => {
-        fetch("api/sanbay/GetSanbays")
-            .then(response => response.json())
-            .then(responseJson => {
-                console.log(responseJson);
-                setSanbays(responseJson);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-    }, [])
+ 
 
 
 
@@ -68,7 +59,7 @@ const SanBay = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedSanbays.length > 0) {
-                const response = await fetch(`/api/sanbay/GetSanbayDetails?cIds=${selectedSanbays.join(',')}`);
+                const response = await fetch(`/api/sanbay/GetSanbayDetails?airportIds=${selectedSanbays.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -92,7 +83,7 @@ const SanBay = () => {
                 });
 
                 if (response.status === 200) {
-                    const updatedSanbays = sanbays.filter(sanbay => !selectedSanbays.includes(sanbay.cId));
+                    const updatedSanbays = sanbays.filter(sanbay => !selectedSanbays.includes(sanbay.airportId));
 
                     // Cập nhật state để tái render bảng
                     setSanbays(updatedSanbays);
@@ -109,9 +100,36 @@ const SanBay = () => {
             }
         }
     };
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+
+    const handleSearch = async () => {
+        if (searchKeyword != "") {
+            try {
+                const response = await fetch(`/api/sanbay/SearchSanbays?searchKeyword=${searchKeyword}`);
+                const data = await response.json();
+                setSanbays(data);
+            } catch (error) {
+                console.error("Error searching customers:", error);
+            }
+        }
+        else {
+            try {
+                const response = await fetch("/api/sanbay/GetSanbays");
+                const data = await response.json();
+                setSanbays(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
     return (
-        <div className="col-md-10 main">
-  <div className="container mt-md-6">
+        <div className="col-md-12 main">
+  <div className="mt-md-6">
     <div className="navbar d-flex justify-content-between align-items-center">
       <h2 className="main-name mb-0">Thông tin sân bay</h2>
       {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
@@ -131,21 +149,28 @@ const SanBay = () => {
       <div className="d-flex w-100 justify-content-start align-items-center">
         <i className="bi bi-search" />
         <span className="first">
-          <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
         </span>
         <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
       </div>
     </div>
     <table className="table table-bordered">
       <thead>
-        <tr>
-          <th>airportID</th>
-          <th>airportName</th>
-          <th>place</th>
+                        <tr>
+        <th />
+          <th>Mã sân bay</th>
+          <th>Tên sân bay</th>
+          <th>Địa điểm</th>
         </tr>
       </thead>
                     <tbody>
-                        {sanbays.map((item) => (
+                        {currentItems.map((item) => (
                             <tr key={item.airportId}>
                                 <td contentEditable="true" className="choose">
                                     <input

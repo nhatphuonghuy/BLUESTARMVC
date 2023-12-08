@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const DoAn = () => {
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [foods, setFoods] = useState([]);
     const [selectedFoods, setSelectedFoods] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,35 +23,28 @@ const DoAn = () => {
         navigate('/DoAn_Them');
     };
 
-    useEffect(() => {
-        fetch("api/food/GetFoods")
-            .then(response => response.json())
-            .then(responseJson => {
-                console.log(responseJson);
-                setFoods(responseJson);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-    }, [])
 
 
 
 
     useEffect(() => {
-        // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
                 const response = await fetch("/api/food/GetFoods");
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
                 const data = await response.json();
                 setFoods(data);
             } catch (error) {
-                console.error("Error fetching data:", error);
+                console.error("Error fetching data:", error.message);
+                // You might want to notify the user about the error
             }
         };
 
         fetchData();
     }, []);
+
 
 
     const handleCheckboxChange = (FoodId) => {
@@ -68,7 +62,7 @@ const DoAn = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedFoods.length > 0) {
-                const response = await fetch(`/api/food/GetFoodDetails?cIds=${selectedFoods.join(',')}`);
+                const response = await fetch(`/api/food/GetFoodDetails?fIds=${selectedFoods.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -92,7 +86,7 @@ const DoAn = () => {
                 });
 
                 if (response.status === 200) {
-                    const updatedFoods = foods.filter(food => !selectedFoods.includes(food.cId));
+                    const updatedFoods = foods.filter(food => !selectedFoods.includes(food.fId));
 
                     // Cập nhật state để tái render bảng
                     setFoods(updatedFoods);
@@ -109,9 +103,36 @@ const DoAn = () => {
             }
         }
     };
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+
+    const handleSearch = async () => {
+        if (searchKeyword != "") {
+            try {
+                const response = await fetch(`/api/food/SearchFoods?searchKeyword=${searchKeyword}`);
+                const data = await response.json();
+                setFoods(data);
+            } catch (error) {
+                console.error("Error searching customers:", error);
+            }
+        }
+        else {
+            try {
+                const response = await fetch("/api/food/GetFoods");
+                const data = await response.json();
+                setFoods(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
     return (
-        <div className="col-md-10 main">
-  <div className="container mt-md-6">
+        <div className="col-md-12 main">
+  <div className="mt-md-6">
     <div className="navbar d-flex justify-content-between align-items-center">
       <h2 className="main-name mb-0">Thông tin thực đơn</h2>
       {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
@@ -131,7 +152,13 @@ const DoAn = () => {
       <div className="d-flex w-100 justify-content-start align-items-center">
         <i className="bi bi-search" />
         <span className="first">
-          <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
         </span>
         <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
       </div>
@@ -140,20 +167,20 @@ const DoAn = () => {
       <thead>
         <tr>
           <th />
-          <th>F_ID</th>
-          <th>F_NAME</th>
-          <th>F_PRICE</th>
+          <th>Mã món ăn</th>
+          <th>Tên món ăn</th>
+          <th>Giá tiền</th>
         </tr>
       </thead>
                     <tbody>
                         {currentItems.map((item) => (
-                            <tr key={item.cId}>
+                            <tr key={item.fId}>
                                 <td contentEditable="true" className="choose">
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        onChange={() => handleCheckboxChange(item.cId)}
-                                        checked={selectedFoods.includes(item.cId)}
+                                        onChange={() => handleCheckboxChange(item.fId)}
+                                        checked={selectedFoods.includes(item.fId)}
                                     />
                                 </td>
                                 <td>{item.fId}</td>
