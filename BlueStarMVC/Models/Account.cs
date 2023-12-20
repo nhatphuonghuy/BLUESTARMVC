@@ -10,6 +10,7 @@ public partial class Account
     public string? Password { get; set; }
 
     public string? Name { get; set; }
+    public string? Position { get; set; }
 
-   // public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+    // public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 }

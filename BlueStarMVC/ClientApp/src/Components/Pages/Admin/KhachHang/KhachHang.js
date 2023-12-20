@@ -12,6 +12,7 @@ const KhachHang = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
     const navigate = useNavigate();
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -70,9 +71,17 @@ const KhachHang = () => {
         }
     };
 
-    const handleDelete = async () => {
+    const divHandleDelete = () => {
         if (selectedCustomers.length > 0) {
-            if (window.confirm("Are you sure to delete this customer")) {
+            setShowConfirmation(true);
+        } else {
+            toast.warning('No customers selected for deletion');
+        }
+    };
+
+    const handleDelete = async () => {
+        setShowConfirmation(false);
+        if (selectedCustomers.length > 0) {
                 try {
                     const response = await axios.delete('http://localhost:44430/api/customer', {
                         data: selectedCustomers, // Pass the array as data
@@ -97,7 +106,6 @@ const KhachHang = () => {
                 } catch (error) {
                     toast.error('Error deleting customers: ' + error.message);
                 }
-            }
         }
     };
     const handleKeyPress = (e) => {
@@ -129,24 +137,13 @@ const KhachHang = () => {
     };
 
 
-
-
     return (
         <div className="col-md-12 main">
             <div className=" mt-md-6">
                 <div className="navbar d-flex justify-content-between align-items-center">
                     <h2 className="main-name mb-0">Khách hàng</h2>
                     {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
-                    <div className="dropdown">
-                        <a className="d-flex align-items-center dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className="bi bi-person-circle" />
-                        </a>
-                        {/* Dropdown menu */}
-                        <div className="dropdown-menu" aria-labelledby="userDropdown">
-                            <a className="dropdown-item" href="#">Đổi mật khẩu</a>
-                            <a className="dropdown-item" href="#">Xem thêm thông tin</a>
-                        </div>
-                    </div>
+                    
                 </div>
     {/*thanh tìm kiếm với bộ lọc*/}
     <div className="find mt-5">
@@ -162,7 +159,7 @@ const KhachHang = () => {
                             />
 
         </span>
-        <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
+       
       </div>
     </div>
     <table className="table table-bordered">
@@ -195,11 +192,18 @@ const KhachHang = () => {
                             </tr>
                         ))}
       </tbody>
-    </table>
+                </table>
+                {showConfirmation && (
+                    <div className="confirmation-dialog">
+                        <p>Bạn chắc chắn muốn xóa khách hàng?</p>
+                        <button className="yes" onClick={handleDelete}>Có</button>
+                        <button className="no" onClick={() => setShowConfirmation(false)}>Không</button>
+                    </div>
+                )}
     {/*3 nut bam*/}
     <div className="d-flex justify-content-end my-3">
                     <button className="btn btn-primary mr-2" id="btnThem" onClick={handleClick}>Thêm</button>
-                    <button className="btn btn-danger mr-2" id="btnXoa" onClick={handleDelete }>Xóa</button>
+                    <button className="btn btn-danger mr-2" id="btnXoa" onClick={divHandleDelete}>Xóa</button>
                     <button className="btn btn-warning" id="btnSua" onClick={handleShowInfo}>Sửa</button>
     </div>
                 <ul className="pagination justify-content-center">

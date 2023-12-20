@@ -19,7 +19,7 @@ public partial class Ticket
 
     public string? FoodId { get; set; }
 
-    public int TicketPrice { get; set; }
+    public long TicketPrice { get; set; }
 
     public string Mail { get; set; } = null!;
 

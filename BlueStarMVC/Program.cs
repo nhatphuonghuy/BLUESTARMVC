@@ -1,4 +1,6 @@
 using BlueStarMVC.Models;
+using BlueStarMVC.Pages.Server.Options;
+using BlueStarMVC.Pages.Server;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -9,15 +11,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BluestarContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BluestarDbContext")));
+builder.Services.Configure<ZaloPayOptions>(builder.Configuration.GetSection("ZaloPay"));
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
+builder.Services.AddScoped<ZaloClient>();
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2VlhhQlVHfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hSn9SdkNjW35ec3FcQ2dV");
 
 // Add this block to configure services
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:44430")
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
     });
 });
 
@@ -36,10 +42,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseCors(builder => {
-    builder
-        .WithOrigins("http://localhost:44430")
-    .AllowAnyMethod()
-    .AllowAnyHeader();
+    builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
 
 }); // Enable CORS
 

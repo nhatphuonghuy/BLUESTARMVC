@@ -3,13 +3,12 @@ import Booking from '../BKP/Booking';
 import Container from '@mui/material/Container';
 import Header from '../Header/Header';
 import "./DefaultLayout.css"
-import Footer from '../Footer/Footer';
-export default function DefaultLayOut({children }) {
+export default function DefaultLayOut({ children }) {
     return (
         <>
             <Header />
             <div className="body-main">
-            <Booking/>
+                <Booking />
                 {/*Booking main*/}
                 <div className="Booking-Main-Body">
                     <Container
@@ -19,9 +18,8 @@ export default function DefaultLayOut({children }) {
                         {children}
                     </Container>
                 </div>
-               
+
             </div>
-            <Footer />
         </>
     )
 }

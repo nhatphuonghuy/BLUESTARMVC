@@ -33,6 +33,8 @@ public partial class BluestarContext : DbContext
 
     public virtual DbSet<Ticket> Tickets { get; set; }
 
+    public DbSet<Seat> Seats { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=localhost;Database=BLUESTAR;Trusted_Connection=True;TrustServerCertificate=True");
@@ -56,6 +58,9 @@ public partial class BluestarContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(20)
                 .HasColumnName("PASSWORD");
+            entity.Property(e => e.Position)
+                .HasMaxLength(50)
+                .HasColumnName("POSITION");
         });
 
         modelBuilder.Entity<Chuyenbay>(entity =>
@@ -264,7 +269,29 @@ public partial class BluestarContext : DbContext
                 .HasMaxLength(3)
                 .IsUnicode(false)
                 .HasColumnName("Seat_ID");
-            entity.Property(e => e.TicketPrice).HasColumnName("Ticket_Price");
+            entity.Property(e => e.TicketPrice)
+            .HasColumnName("Ticket_Price")
+            .HasColumnType("bigint");
+        });
+
+        modelBuilder.Entity<Seat>(entity =>
+        {
+            entity.HasKey(e => e.SeatId).HasName("PK__SEAT__79B89923D3A743A3");
+
+            entity.ToTable("SEAT");
+
+            entity.Property(e => e.SeatId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("SEAT_ID");
+            entity.Property(e => e.FlightId)
+                .HasMaxLength(20)
+                .HasColumnName("FLIGHT_ID");
+            entity.Property(e => e.IsBooked).HasColumnName("ISBOOKED");
+            entity.Property(e => e.SeatType)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("SEAT_TYPE");
         });
 
         OnModelCreatingPartial(modelBuilder);

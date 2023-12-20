@@ -10,6 +10,7 @@ import axios from 'axios';
 const SuaKhachHang = () => {
     const location = useLocation();
     const [selectedCustomerInfo, setSelectedCustomerInfo] = useState(location.state?.selectedCustomerInfo || []);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         console.log("Selected customer info in SuaKhachHang useEffect:", selectedCustomerInfo);
@@ -87,7 +88,8 @@ const SuaKhachHang = () => {
                 throw new Error(JSON.stringify(errorMessage));
             }
 
-            alert("Khách hàng đã được cập nhật");
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 3000);
 
         } catch (err) {
             // Xử lý lỗi
@@ -99,6 +101,11 @@ const SuaKhachHang = () => {
 
     return (
         <div className="container-fluid">
+            {showSuccessMessage && (
+                <div className="alert alert-success mt-3" role="alert">
+                    Sửa khách hàng thành công!
+                </div>
+            )}
             <div className="logo-container">
                 <div className="logo-inner">
                     <img src={logo2} alt="Logo" className="logo-img" />

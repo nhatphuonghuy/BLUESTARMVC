@@ -40,6 +40,11 @@ namespace BlueStarMVC.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("PASSWORD");
 
+                    b.Property<string>("Position")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("POSITION");
+
                     b.HasKey("Email")
                         .HasName("PK__ACCOUNT__161CF725E0FECA79");
 
@@ -270,6 +275,37 @@ namespace BlueStarMVC.Migrations
                         .HasName("PK__SANBAY__C85BDF9E80C3A36E");
 
                     b.ToTable("SANBAY", (string)null);
+                });
+
+            modelBuilder.Entity("BlueStarMVC.Models.Seat", b =>
+                {
+                    b.Property<string>("SeatId")
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("SEAT_ID");
+
+                    b.Property<string>("FlightId")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("FLIGHT_ID");
+
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit")
+                        .HasColumnName("ISBOOKED");
+
+                    b.Property<string>("SeatType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("SEAT_TYPE");
+
+                    b.HasKey("SeatId")
+                        .HasName("PK__SEAT__79B89923D3A743A3");
+
+                    b.ToTable("SEAT", (string)null);
                 });
 
             modelBuilder.Entity("BlueStarMVC.Models.Ticket", b =>

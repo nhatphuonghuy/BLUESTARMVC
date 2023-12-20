@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
+import logo from '../../../../src/assets/logo2.PNG';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ children }) => { 
     const [discountCount, setDiscountCount] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Thực hiện fetch dữ liệu từ API hoặc trạng thái ứng dụng của bạn
@@ -18,6 +21,12 @@ const Sidebar = ({ children }) => {
 
         fetchDiscountCount();
     }, []);
+
+    const handleExit = () => {
+        localStorage.removeItem('isLoggedIn');
+        navigate("/");
+    }
+
     return (
         <div>
         <meta charSet="UTF-8" />
@@ -35,7 +44,7 @@ const Sidebar = ({ children }) => {
             <li className="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
               <div className="logo-container">
                 <div className="logo-inner">
-                  <img src="Logo.PNG" alt="Logo" className="logo-img" />
+                                    <img src={logo} alt="Logo" className="logo-img" />
                 </div>
                 <span className="Logo-name">Blue Star</span>
               </div>
@@ -99,8 +108,8 @@ const Sidebar = ({ children }) => {
               </div>
             </a>
             {/* Logo */}
-            <br />
-            <a href="#" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
+                        <br />
+                        <a onClick={handleExit} data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
               <div className="d-flex w-100 justify-content-start align-items-center">
                 <i className="bi bi-box-arrow-right" />
                 <span id="collapse-text" className="menu-collapsed">Thoát </span>
