@@ -17,7 +17,7 @@ export default function Booking() {
     const GetAllCountries = async () => {
         try {
             const response = await axios.get(
-                "https://b94f-171-224-240-4.ngrok-free.app/api/airport"
+                "https://f62f-27-74-247-133.ngrok-free.app/api/airport"
             );
             setCountries(response.data);
         } catch (error) {
@@ -249,7 +249,7 @@ export default function Booking() {
                                             Hành Khách
                                         </label>
                                         <div className="input-main">
-                                            <input type="text" value="1 Guest"
+                                            <input type="text" value="1 Khách"
                                             />
                                             <h6 className="airport-name-day booking-body-text-color hiden">
                                                 Hạng vé
@@ -275,7 +275,7 @@ export default function Booking() {
                         <div className="button_container">
                             <Button variant="contained" size="large" startIcon={<SendIcon />} className="custom-button" onClick={() => {
                                 setIsLoading(true);
-                                axios.get(`https://b94f-171-224-240-4.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
+                                axios.get(`https://f62f-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
                                 &DepatureDay=${searchInfo.DepartTime}`)
                                     .then(res => {
                                         setSearchResult(res.data)

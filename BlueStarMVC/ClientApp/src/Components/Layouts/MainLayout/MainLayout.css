@@ -10,7 +10,12 @@
     transform: scale(1.05);
     cursor: pointer;
 }
-
+img, svg {
+    vertical-align: middle;
+}
+.logo-img-mainlayout {
+    height: 50px;
+}
 p {
     margin: 0;
 }

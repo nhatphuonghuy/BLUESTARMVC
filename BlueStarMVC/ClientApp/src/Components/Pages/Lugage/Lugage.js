@@ -27,7 +27,7 @@ export default function Luggage() {
         <Paper className="luggage-paper">
             <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    Purchase luggage successfully !
+                    Mua hành lý thành công !
                 </Alert>
             </Snackbar>
             <div className="luggage-wrapper">
@@ -41,7 +41,7 @@ export default function Luggage() {
                                     setActiveButton("Depart");
                                 }}
                             >
-                                Depart
+                                Điểm đi
                             </button>
 
                             <button
@@ -51,14 +51,14 @@ export default function Luggage() {
                                     setActiveButton("Depart");
                                 }}
                             >
-                                Arrive
+                                Điểm đến
                             </button>
                         </div>
                     )
                 }
                 <div className="adults && children">
                     <div className="luggage-image">
-                        <img src="/Images/Adult.png" />
+                        <img class="img-hanhly" src="/Images/Adult.png" />
                     </div>
                     <h3 className="luggage-title">
                         Adults and Children
@@ -82,7 +82,7 @@ export default function Luggage() {
                 </div>
                 <div className="Infant">
                     <div className="luggage-image">
-                        <img src="/Images/Infant.png" />
+                        <img class="img-hanhly" src="/Images/Infant.png" />
                     </div>
                     <h3 className="luggage-title">
                         Infant
@@ -105,7 +105,7 @@ export default function Luggage() {
                 </div>
                 <div className="Hand-Luggage">
                     <div className="luggage-image">
-                        <img src="/Images/Hand.png" />
+                        <img class="img-hanhly" src="/Images/Hand.png" />
                     </div>
                     <h3 className="luggage-title">
                         Hand luggage

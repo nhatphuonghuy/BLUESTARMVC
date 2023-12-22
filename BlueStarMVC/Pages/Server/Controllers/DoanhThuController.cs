@@ -1,4 +1,5 @@
-﻿using BlueStarMVC.Models;
+﻿using BlueStarMVC.Migrations;
+using BlueStarMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -67,6 +68,26 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 // Calculate total revenue for the year
                 decimal totalRevenue = result.Sum(item => item.TicketPrice);
 
+                var details = _dbContext.Tickets
+            .Join(
+                _dbContext.Chuyenbays,
+                ticket => ticket.FlyId,
+                flight => flight.FlyId,
+                (ticket, flight) => new
+                {
+                    TId = ticket.TId,
+                    Cccd = ticket.Cccd,
+                    Name = ticket.Name,
+                    FlyId = flight.FlyId,
+                    DepartureDay = flight.DepartureDay
+                }
+            )
+            .Where(item => item.DepartureDay.Substring(6, 4) == year)
+            .ToList();
+
+                // You can return the result along with the total revenue
+                return Ok(new { TotalRevenue = totalRevenue, Details = details });
+
                 // You can return the result along with the total revenue
                 return Ok(totalRevenue);
             }
@@ -102,8 +123,25 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 // Calculate total revenue for the year
                 decimal totalRevenue = result.Sum(item => item.TicketPrice);
 
+                var details = _dbContext.Tickets
+            .Join(
+                _dbContext.Chuyenbays,
+                ticket => ticket.FlyId,
+                flight => flight.FlyId,
+                (ticket, flight) => new
+                {
+                    TId = ticket.TId,
+                    Cccd = ticket.Cccd,
+                    Name = ticket.Name,
+                    FlyId = flight.FlyId,
+                    DepartureDay = flight.DepartureDay
+                }
+            )
+            .Where(item => item.DepartureDay.Substring(6, 4) == year && item.DepartureDay.Substring(3, 2) == month)
+            .ToList();
+
                 // You can return the result along with the total revenue
-                return Ok(totalRevenue);
+                return Ok(new { TotalRevenue = totalRevenue, Details = details });
             }
             catch (Exception ex)
             {

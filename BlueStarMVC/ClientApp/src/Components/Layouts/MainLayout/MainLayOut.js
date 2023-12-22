@@ -2,6 +2,7 @@
 import Booking from '../BKP/Booking';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import logo from '../../../assets/logo2.PNG';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
@@ -76,7 +77,7 @@ export default function MainLayOut({ children }) {
                                             <div className="Logo-Wrapper-ticketPage">
                                                 <div className="logo-left">
                                                     <div className="Logo-Image-ticketPage">
-                                                        <img src="https://www.vietjetair.com/static/media/vj-logo.0f71c68b.svg" />
+                                                        <img className="logo-img-mainlayout" src={logo} />
                                                     </div>
                                                     <h6>Bluestar Air</h6>
                                                 </div>
@@ -145,7 +146,7 @@ export default function MainLayOut({ children }) {
                                                 <div className="Logo-Wrapper-ticketPage">
                                                     <div className="logo-left">
                                                         <div className="Logo-Image-ticketPage">
-                                                            <img src="https://www.vietjetair.com/static/media/vj-logo.0f71c68b.svg" />
+                                                                <img src={logo } />
                                                         </div>
                                                         <h6>Bluestar Air</h6>
                                                     </div>
@@ -200,7 +201,7 @@ export default function MainLayOut({ children }) {
                                                 <div className="Logo-Wrapper-ticketPage">
                                                     <div className="logo-left">
                                                         <div className="Logo-Image-ticketPage">
-                                                            <img src="https://www.vietjetair.com/static/media/vj-logo.0f71c68b.svg" />
+                                                                <img src={logo } />
                                                         </div>
                                                         <h6>Bluestar Air</h6>
                                                     </div>
@@ -287,11 +288,11 @@ export default function MainLayOut({ children }) {
                                 {
                                     tripType === "oneWay" ? (
                                         <Paper className="fare-paper">
-                                            <h6 className="fare-header">Fare Summary</h6>
+                                            <h6 className="fare-header">Chi tiết giá vé</h6>
                                             <ul className="item-list">
                                                 <li className="item-ticket">
                                                     <p>
-                                                        Food , Snack and Drink
+                                                        Bánh ngọt và nước suối
                                                     </p>
                                                     <p>
                                                         120000 VND
@@ -299,7 +300,7 @@ export default function MainLayOut({ children }) {
                                                 </li>
                                                 <li className="item-ticket">
                                                     <p>
-                                                        Ticket
+                                                        Vé
                                                     </p>
                                                     <p>
                                                         {removeTrailingZeros(departFlight.originalPrice)} VND
@@ -318,13 +319,13 @@ export default function MainLayOut({ children }) {
                                                     ))
                                                 }
                                                 <li className="item-ticket">
-                                                    Discount
+                                                    Giảm giá
                                                 </li>
                                             </ul>
 
                                             <div className="ticker-footer">
                                                 <div className="ticker-footer-total" >
-                                                    Total Sumary
+                                                    Tổng
                                                 </div>
                                                 <div className="ticker-footer-value" >
                                                     {total1} VND
@@ -334,11 +335,11 @@ export default function MainLayOut({ children }) {
                                     ) : (
                                         <>
                                             <Paper className="fare-paper">
-                                                <h6 className="fare-header">Outgoing trip</h6>
+                                                <h6 className="fare-header">CHuyến đi</h6>
                                                 <ul className="item-list">
                                                     <li className="item-ticket">
                                                         <p>
-                                                            Food , Snack and Drink
+                                                            Bánh ngọt và nước suối
                                                         </p>
                                                         <p>
                                                             120000 VND
@@ -346,7 +347,7 @@ export default function MainLayOut({ children }) {
                                                     </li>
                                                     <li className="item-ticket">
                                                         <p>
-                                                            Ticket
+                                                            Vé
                                                         </p>
                                                         <p>
                                                             {removeTrailingZeros(departFlight.originalPrice)} VND
@@ -365,13 +366,13 @@ export default function MainLayOut({ children }) {
                                                         ))
                                                     }
                                                     <li className="item-ticket">
-                                                        Discount
+                                                        Giảm giá
                                                     </li>
                                                 </ul>
 
                                                 <div className="ticker-footer">
                                                     <div className="ticker-footer-total" >
-                                                        Total Sumary
+                                                        Tổng
                                                     </div>
                                                     <div className="ticker-footer-value" >
                                                         {total1} VND
@@ -379,11 +380,11 @@ export default function MainLayOut({ children }) {
                                                 </div>
                                             </Paper>
                                             <Paper className="fare-paper mt-20">
-                                                <h6 className="fare-header">Return trip</h6>
+                                                <h6 className="fare-header">Chuyến về</h6>
                                                 <ul className="item-list">
                                                     <li className="item-ticket">
                                                         <p>
-                                                            Food , Snack and Drink
+                                                            Bánh ngọt và nước suối
                                                         </p>
                                                         <p>
                                                             120000 VND
@@ -391,7 +392,7 @@ export default function MainLayOut({ children }) {
                                                     </li>
                                                     <li className="item-ticket">
                                                         <p>
-                                                            Ticket
+                                                            Vé
                                                         </p>
                                                         <p>
                                                             {removeTrailingZeros(ariveFlight.originalPrice)} VND
@@ -410,13 +411,13 @@ export default function MainLayOut({ children }) {
                                                         ))
                                                     }
                                                     <li className="item-ticket">
-                                                        Discount
+                                                        Giảm giá
                                                     </li>
                                                 </ul>
 
                                                 <div className="ticker-footer">
                                                     <div className="ticker-footer-total" >
-                                                        Total Sumary
+                                                        Tổng
                                                     </div>
                                                     <div className="ticker-footer-value" >
                                                         {total2} VND

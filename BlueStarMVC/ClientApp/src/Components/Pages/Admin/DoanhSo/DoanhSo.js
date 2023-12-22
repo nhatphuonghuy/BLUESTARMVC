@@ -98,14 +98,22 @@ const DoanhSo = () => {
 
             const data = await response.json();
             console.log("Before setDoanhThu:", doanhthu);
-            setDoanhThu(data);
+            console.log("data: ", data);
+            setDoanhThu(data.totalRevenue);
+            setDetails(data.details);
+            console.log("After setdetails:", detail);
             tongdoanhthu = data;
             console.log("After setDoanhThu:", doanhthu);
-            exportToPDF();
+            
         } catch (error) {
             console.error("Error fetching doanh so data:", error);
         }
     };
+
+    const handPDF = () => {
+        exportToPDF();
+    }
+
     const exportToPDF = () => {
         // Create a new jsPDF instance
         const pdf = new jsPDF({
@@ -265,7 +273,7 @@ const DoanhSo = () => {
             </div>
             <div className="btn-click ">
                         <button className="btn btn-primary btn-search" onClick={hanhdleSearch}>Tìm kiếm</button>
-              <button className="btn btn-secondary ml-2 btn-print">In báo cáo</button>
+                        <button className="btn btn-secondary ml-2 btn-print" onClick={handPDF }>In báo cáo</button>
                         <button className="btn btn-success ml-2 btn-export" onClick={exportToExcel }>Xuất file excel</button>
             </div>
             <div className="form-group mt-3">

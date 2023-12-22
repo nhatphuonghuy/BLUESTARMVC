@@ -40,7 +40,7 @@ export default function SearchPage() {
                 setDepartFlight(flight);
                 setActiveButton("Arrive");
                 setIsLoading(true);
-                axios.get(`https://5275-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepatureDay=${searchInfo.ComeBackTime}`)
+                axios.get(`https://f62f-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepatureDay=${searchInfo.ComeBackTime}`)
                     .then(res => {
                         setSearchResult(res.data)
                         setIsLoading(false);
@@ -67,7 +67,7 @@ export default function SearchPage() {
     function HandleReset() {
         setIsLoading(true);
         setActiveTimeLine(null);
-        axios.get(`https://5275-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
+        axios.get(`https://f62f-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
                                 &DepatureDay=${searchInfo.DepartTime}`)
             .then(res => {
                 setSearchResult(res.data)
@@ -80,7 +80,7 @@ export default function SearchPage() {
         if (searchInfo.FromLocation != null && searchInfo.ToLocation != null && searchInfo.DepartTime != null && searchInfo.ComeBackTime != null) {
             if (activeButton === "Depart") {
                 setIsLoading(true);
-                axios.get(`https://5275-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
+                axios.get(`https://f62f-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
                                 &DepatureDay=${searchInfo.DepartTime}`)
                     .then(res => {
                         setSearchResult(res.data)
@@ -91,7 +91,7 @@ export default function SearchPage() {
             }
             else {
                 setIsLoading(true);
-                axios.get(`https://5275-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
+                axios.get(`https://f62f-27-74-247-133.ngrok-free.app/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
                                     &DepatureDay=${searchInfo.ComeBackTime}`)
                     .then(res => {
                         setSearchResult(res.data)
@@ -227,18 +227,18 @@ export default function SearchPage() {
                 {searchResult.flight && searchResult.flight.length > 0 && searchResult.flight[0] && (
                     <div className="search-result-header">
                         <h6>
-                            We have {searchResult.total_flight} tickets from {searchResult.flight[0].fromLocation} to {searchResult.flight[0].toLocation}
+                            Chúng tôi có {searchResult.total_flight} vé từ {searchResult.flight[0].fromLocation} đến {searchResult.flight[0].toLocation}
                         </h6>
                         {
                             tripType === "roundTrip" && (
                                 <div>
                                     <Button variant={activeButton === 'Depart' ? 'contained' : 'outlined'} size="large" startIcon=
                                         {<FlightTakeoffOutlinedIcon />} color="success" className="custom-button-search" >
-                                        Depart
+                                        Điểm đi
                                     </Button>
                                     <Button variant={activeButton === 'Arrive' ? 'contained' : 'outlined'} size="large"
                                         startIcon={<FlightLandOutlinedIcon />} className="custom-button-search" >
-                                        Arrive
+                                        Điểm đến
                                     </Button>
                                 </div>
                             )

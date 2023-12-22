@@ -1,5 +1,6 @@
 ﻿import * as React from 'react';
-import "./TicketResult.css"
+import "./TicketResult.css";
+import logo from '../../../../assets/logo2.PNG';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 export default function TicketResult({ flight, handleClick }) {
     function removeTrailingZeros(number) {
@@ -29,7 +30,7 @@ export default function TicketResult({ flight, handleClick }) {
             <div className="Ticket-Left" >
                 <div className="Logo-Wrapper">
                     <div className="Logo-Image">
-                        <img src="https://www.vietjetair.com/static/media/vj-logo.0f71c68b.svg" />
+                        <img src={logo } />
                     </div>
                 </div>
                 <div className="schedule">

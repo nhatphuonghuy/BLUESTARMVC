@@ -27,7 +27,7 @@ namespace BlueStarMVC.Pages.Server
     DateTime.Now.ToString("yyMMdd") + "_" + app_trans_id,
     " ", new EmbedData
             {
-                RedirectURL = "https://b94f-171-224-240-4.ngrok-free.app/sign-in",
+                RedirectURL = $"https://cd29-27-74-247-133.ngrok-free.app/",
                 CustomerEmail = createOrder.CustomerEmail,
                 CustomerIdentify = createOrder.CustomerIdentify,
                 CustomerName = createOrder.CustomerName,
@@ -42,7 +42,7 @@ namespace BlueStarMVC.Pages.Server
                 TripType = createOrder.TripType
             },
             new Item[] { new Item { ItemID = "", ItemName = "" } }, $"Creat Ticket Order for {createOrder.CustomerName}",
-             createOrder.CustomerPhone, "ngotattopq@gmail.com", "Thanh toan tien ve may bay", zaloPayOptions.CallbackUrl);
+             createOrder.CustomerPhone, createOrder.CustomerEmail, "Thanh toan tien ve may bay", zaloPayOptions.CallbackUrl);
             orderZaloPay.MakeSignature(zaloPayOptions.Key1);
             var result = await orderZaloPay.CreateOrderAsync(zaloPayOptions.Endpoint);
             return result;

@@ -152,5 +152,47 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet]
+        [Route("GetTicketReviewDetails")]
+        public IActionResult GetTicketReviewDetails([FromQuery] string name)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return BadRequest("Invalid name");
+                }
+
+                var ticketReviewDetails = _dbContext.Tickets
+                    .Where(t => t.Name == name) // Sửa đổi dòng này để tìm kiếm theo tên
+                    .Join(_dbContext.Chuyenbays,
+                          ticket => ticket.FlyId,
+                          chuyenbay => chuyenbay.FlyId,
+                          (ticket, chuyenbay) => new
+                          {
+                              ticket.Name,
+                              ticket.Cccd,
+                              ticket.SeatId,
+                              ticket.FlyId,
+                              chuyenbay.DepartureDay,
+                              chuyenbay.DepartureTime,
+                              chuyenbay.ArrivalTime
+                          })
+                    .FirstOrDefault();
+
+                if (ticketReviewDetails == null)
+                {
+                    return NotFound("Ticket review details not found");
+                }
+
+                return Ok(ticketReviewDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 }
